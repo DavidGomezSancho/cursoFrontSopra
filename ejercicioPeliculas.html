@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cabecera de navegador</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <form action="miAccion" method="POST">
+            <!--<input type="text" placeholder="Poner algo" pattern="^[xyzXYZ]?[0-9]{7,8}[a-zA-Z]$"/> -->
+            <!-- ^ -> Que comience por, ? -> opcional 
+                 $ -> Que acabe por | [] ->   -->
+            <label for="titulo">Título: </label><input type="text" name="titulo" />
+            <label for="director">Director: </label><input type="text" name="director" />
+            <label for="cod-id">Cod-id: </label><input type="text" name="cod-id" pattern="^[a-zA-Z]*[-][0-9]*[-][a-zA-Z]*$" placeholder="AAA-1111-BBB" />
+            <select name="genero">
+                <option value="G">Género</option>
+                <option value="A">Acción</option>
+                <option value="I">Infantil</option>
+                <option value="D">Drama</option>
+                <option value="S">Suspense</option>
+                <option value="T">Tragedia</option>
+            </select>
+            <label for="fechPublicacion">Fecha de publicación: </label><input type="date" name="fechPublicacion" />
+            <label for="valoracion">Valoración: </label><input type="number" name="valoracion" min="0" max="10"/>
+            <input type="submit" value="Enviar"/>
+        </form>
+
+        <br/>
+        <table class="peliculasT">
+            <tr>
+                <td>Título</td>
+                <td>Director</td>
+                <td>Cod-id</td>
+                <td>Género</td>
+                <td>Fecha de publicación</td>
+                <td>Valoración</td>
+            </tr>
+              
+            <tr>
+                <td>Batman</td>
+                <td>Nolan</td>
+                <td>1234</td>
+                <td>Suspense</td>
+                <td>2008</td>
+                <td>10</td>
+            </tr>
+            
+            <tr>
+                <td>El señor de los anillos</td>
+                <td>Peter Jackson</td>
+                <td>1255</td>
+                <td>Acción</td>
+                <td>2001</td>
+                <td>10</td>
+            </tr>
+        </table>
+    </body>
+</html>

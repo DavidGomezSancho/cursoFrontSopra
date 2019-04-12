@@ -4,7 +4,7 @@ function inicializar(){
     var tabla = localStorage.getItem("tabla");
     if(tabla != null){
         if ((tabla.trim()==="")){
-            inicializarAjaxPrueba();
+            getPeliculasAjax();
         }else{
             tablaVista.innerHTML=tabla;
             __num_filas = localStorage.getItem("num_filas");
@@ -13,9 +13,12 @@ function inicializar(){
             }
         }
     }else{//Si está vacía la tabla le enchufas ajax
-        inicializarAjaxPrueba();
+        getPeliculasAjax();
     }
-    
+    //guardaUno(pelicula);
+    //dameUno(pelicula)
+    //borraUno(pelicula);
+    //actualizaUno(pelicula);
 }
 
 function anyadirPeliculaButton(){
@@ -27,7 +30,7 @@ function anyadirPeliculaButton(){
 
 function getPeliculaFromFormulario(){
     var pelicula = new Pelicula();
-    pelicula.titulo = document.getElementById("titulo").value;
+    pelicula.titulo = document.getElementById("titulo").value;//document.getElementById("titulo").value
     pelicula.director = document.getElementById("director").value;
     pelicula.codId = document.getElementById("cod-id").value;
     var elementoGenero = document.getElementById("genero");
@@ -40,8 +43,19 @@ function getPeliculaFromFormulario(){
 
 function eliminarFila(numeroFila){
     var tabla = document.getElementById("vistaTablaPeliculasBody");
-    tabla.removeChild(document.getElementById("filaNum"+numeroFila));
+    var fila = document.getElementById("filaNum"+numeroFila);
+    tabla.removeChild(fila);
     localStorage.setItem("tabla", tabla.innerHTML);
+
+    var pelicula = new Pelicula();
+    var elementosDeFila = fila.childNodes;
+    pelicula.titulo=elementosDeFila[0].innerHTML;
+    pelicula.director=elementosDeFila[1].innerHTML;
+    pelicula.codId=elementosDeFila[2].innerHTML;
+    pelicula.genero=elementosDeFila[3].innerHTML;
+    pelicula.fecha=elementosDeFila[4].innerHTML;
+    pelicula.valoracion=elementosDeFila[5].innerHTML;
+    borraUno(pelicula);
 }
 
 function anyadirFilaAPartirDeParametros(pelicula){
@@ -54,12 +68,13 @@ function anyadirFilaAPartirDeParametros(pelicula){
     anyadirTdAPartirDeParametros(fila, "director", pelicula.director);
     anyadirTdAPartirDeParametros(fila, "cod-id", pelicula.codId);
     anyadirTdAPartirDeParametros(fila, "genero", pelicula.genero);
-    anyadirTdAPartirDeParametros(fila, "fechPublicacion", pelicula.fechPublicacion);
+    anyadirTdAPartirDeParametros(fila, "fechPublicacion", pelicula.fecha);
     anyadirTdAPartirDeParametros(fila, "valoracion", pelicula.valoracion);
     fila.innerHTML+="<td><button onclick='eliminarFila("+current_num_fila+")'>Eliminar</button></td>";
     var tabla = document.getElementById("vistaTablaPeliculasBody");
     tabla.appendChild(fila);
     localStorage.setItem("tabla", tabla.innerHTML);
+    guardaUno(pelicula);
 }
 
 function anyadirTdAPartirDeParametros(fila, idElementoForm, valorParametro){
@@ -69,32 +84,14 @@ function anyadirTdAPartirDeParametros(fila, idElementoForm, valorParametro){
     fila.appendChild(elementoFila);
 }
 
-function inicializarAjaxPrueba(){
-    var ajax = new XMLHttpRequest();
-    ajax.open("GET","http://192.168.1.63:8080/peliculas");//"./ejercicio01Ajax/data.json"
-    ajax.onreadystatechange = function(){
-        if(ajax.status == 200 && ajax.readyState == 4){
-            var datos = JSON.parse(ajax.responseText);
-            for(let indice in datos){
-                let pelicula = new Pelicula();
-                pelicula.titulo=datos[indice].titulo;
-                pelicula.director=datos[indice].director;
-                pelicula.codId=datos[indice].codId;
-                pelicula.genero=datos[indice].genero;
-                pelicula.fecha=datos[indice].fecha;
-                pelicula.valoracion=datos[indice].valoracion;
-                anyadirFilaAPartirDeParametros(pelicula);
-            }
-        }
-    }
-    ajax.send();
-}
+
 
 function modificarPelicula(pelicula){
     var tabla=document.getElementById("vistaTablaPeliculasBody");
     var filas = tabla.getElementsByTagName("tr");
     var fila=filas[0];
     let i=0;
+    if(fila==null) return false;
     do{
         if(fila.childNodes[2].innerHTML===pelicula.codId){
             let elementosDeFila = fila.childNodes;
@@ -104,6 +101,8 @@ function modificarPelicula(pelicula){
             elementosDeFila[3].innerHTML=pelicula.genero;
             elementosDeFila[4].innerHTML=pelicula.fecha;
             elementosDeFila[5].innerHTML=pelicula.valoracion;
+            localStorage.setItem("tabla", tabla.innerHTML);
+            actualizaUno(pelicula);
             return true;
         }
         i++;
@@ -111,3 +110,7 @@ function modificarPelicula(pelicula){
     }while(typeof fila!="undefined");
     return false;
 }
+
+
+
+

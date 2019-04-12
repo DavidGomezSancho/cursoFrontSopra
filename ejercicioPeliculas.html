@@ -4,8 +4,12 @@
         <title>Cabecera de navegador</title>
         <meta charset="UTF-8"/>
         <script src="js/anyadirTabla.js"></script>
+        <script src="js/modelo/peliculas.js"></script>
+        <script src="js/modelo/gestorPeliculas.js"></script>
+        <script src="js/controller/controlPeliculas.js"></script>
+        <script src="ejercicio01Ajax/js/ajax.js"></script>
     </head>
-    <body >
+    <body onload="inicializar();">
         <form action="miAccion" method="POST">
             <!--<input type="text" placeholder="Poner algo" pattern="^[xyzXYZ]?[0-9]{7,8}[a-zA-Z]$"/> -->
             <!-- ^ -> Que comience por, ? -> opcional 
@@ -25,10 +29,11 @@
             <label for="valoracion">Valoración: </label><input type="number" name="valoracion" id="valoracion" min="0" max="10"/>
             <!--<input type="submit" value="Enviar"/>-->
         </form>
-        <button onclick="anyadirFila()">Añadir fila</button>
+        <button onclick="anyadirPeliculaButton()">Añadir</button>
 
         <br/>
-        <table class="peliculasT">
+        <table class="peliculasT" id="vistaTablaPeliculas">
+            <thead>
             <tr>
                 <td>Título</td>
                 <td>Director</td>
@@ -36,25 +41,13 @@
                 <td>Género</td>
                 <td>Fecha de publicación</td>
                 <td>Valoración</td>
+                <td></td>
             </tr>
-              
-            <tr>
-                <td>Batman</td>
-                <td>Nolan</td>
-                <td>1234</td>
-                <td>Suspense</td>
-                <td>2008</td>
-                <td>10</td>
-            </tr>
-            
-            <tr>
-                <td>El señor de los anillos</td>
-                <td>Peter Jackson</td>
-                <td>1255</td>
-                <td>Acción</td>
-                <td>2001</td>
-                <td>10</td>
-            </tr>
+            </thead>
+
+            <tbody id="vistaTablaPeliculasBody">
+                
+            </tbody>
         </table>
     </body>
 </html>
